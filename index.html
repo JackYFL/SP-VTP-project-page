@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="SP-VTP: Spatially Prompted Visual Trajectory Prediction for Egocentric Manipulation."
+    />
+    <meta
+      name="keywords"
+      content="SP-VTP, SPOT, EgoSPT, egocentric manipulation, spatial prompt, trajectory prediction, robotics"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SP-VTP: Spatially Prompted Visual Trajectory Prediction</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./static/css/bulma.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css" />
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"
+    />
+    <link rel="stylesheet" href="./static/css/index.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <strong>SP-VTP</strong>
+        </a>
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-start" style="flex-grow: 1; justify-content: center">
+          <a class="navbar-item" href="#">Home</a>
+          <a class="navbar-item" href="#abstract">Abstract</a>
+          <a class="navbar-item" href="#dataset">EgoSPT</a>
+          <a class="navbar-item" href="#method">SPOT</a>
+          <a class="navbar-item" href="#results">Results</a>
+          <a class="navbar-item" href="#visualizations">Visualizations</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">
+                Spatially Prompted Visual Trajectory Prediction for Egocentric
+                Manipulation
+              </h1>
+
+              <p class="subtitle is-4 tagline">
+                A vision-centric manipulation setting where object and target
+                spatial prompts in the first egocentric frame condition future
+                end-effector trajectory prediction.
+              </p>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"
+                  ><a href="https://jackyfl.github.io/">Yifan Li</a><sup>1*</sup>,</span
+                >
+                <span class="author-block"
+                  ><a
+                    href="https://scholar.google.com/citations?user=AcPskncAAAAJ&hl=zh-CN&oi=ao"
+                    >Xinyu Zhou</a
+                  ><sup>1*</sup>,</span
+                >
+                <span class="author-block"
+                  ><a href="https://gyhandy.github.io/">Yunhao Ge</a
+                  ><sup>2</sup>,</span
+                >
+                <span class="author-block"
+                  ><a href="https://www.egr.msu.edu/~yukong/">Yu Kong</a
+                  ><sup>1</sup></span
+                >
+              </div>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"
+                  ><sup>1</sup>Michigan State University,</span
+                >
+                <span class="author-block"><sup>2</sup>NVIDIA Research</span>
+              </div>
+              <div class="is-size-6 publication-authors">
+                <span class="author-block"><sup>*</sup>Equal contribution</span>
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a
+                      href="./static/spvtp-paper.pdf"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a
+                      href="#"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="ai ai-arxiv"></i></span>
+                      <span>arXiv</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a
+                      href="https://github.com/JackYFL/NeurlPS2026-SP-VTP"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="fab fa-github"></i></span>
+                      <span>Code (coming soon)</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a
+                      href="https://huggingface.co/datasets/JackYFL233/EgoSPT/tree/main"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="far fa-images"></i></span>
+                      <span>Data</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section intro-teaser" id="overview">
+      <div class="container is-max-widescreen">
+        <div class="intro-media-grid">
+          <div class="figure-card intro-figure-card">
+            <img
+              class="paper-figure"
+              src="./static/images/spvpt-intro.png"
+              alt="SP-VTP overview"
+            />
+          </div>
+          <div class="figure-card intro-video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="./static/videos_web/demo-intro.m4v" />
+            </video>
+          </div>
+        </div>
+        <h2 class="subtitle has-text-centered intro-caption">
+          We study how first-frame spatial prompts can ground egocentric
+          manipulation and drive future 3D end-effector trajectory prediction.
+        </h2>
+        <div class="contribution-grid mt-5">
+          <div class="contribution-card">
+            <h3>SP-VTP</h3>
+            <p>
+              We formulate egocentric manipulation as spatially prompted visual
+              trajectory prediction from first-frame object-target grounding.
+            </p>
+          </div>
+          <div class="contribution-card">
+            <h3>EgoSPT</h3>
+            <p>
+              We collect egocentric manipulation trajectories with spatial
+              prompt annotations and recovered 3D end-effector motion.
+            </p>
+          </div>
+          <div class="contribution-card">
+            <h3>SPOT</h3>
+            <p>
+              We propose a prompt-centric policy that fuses task prompts,
+              current observations, and history to generate future trajectories.
+            </p>
+          </div>
+          <div class="contribution-card">
+            <h3>Metrics & Protocol</h3>
+            <p>
+              We evaluate scene-level generalization with complementary
+              trajectory, rotation, gripper, and final-displacement metrics.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="abstract">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Robotic manipulation is often specified through language or task
+                IDs, but cluttered egocentric scenes with visually similar
+                objects are often better described by directly indicating
+                <em>which object</em> to manipulate and <em>where</em> it should
+                go.
+              </p>
+              <p>
+                We formalize this setting as
+                <strong>Spatially Prompted Visual Trajectory Prediction</strong>
+                (<strong>SP-VTP</strong>): given object and target spatial
+                prompts on the first frame, a model predicts future relative
+                end-effector trajectories from streaming egocentric
+                observations.
+              </p>
+              <p>
+                We introduce <strong>EgoSPT</strong>, an egocentric manipulation
+                dataset with first-frame grounding annotations and recovered 3D
+                end-effector motion, and propose <strong>SPOT</strong>, a
+                prompt-centric policy that fuses rendered visual prompts,
+                coordinate prompt tokens, current observations, and action
+                history to generate trajectory chunks.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section has-background-light" id="dataset">
+      <div class="container is-max-widescreen">
+        <h2 class="title is-3 has-text-centered">EgoSPT Dataset</h2>
+        <div class="figure-card">
+          <img
+            class="paper-figure"
+            src="./static/images/EgoSPT-intro.png"
+            alt="EgoSPT overview"
+          />
+        </div>
+        <h2 class="subtitle has-text-centered mt-4">
+          <strong>EgoSPT</strong> grounds manipulation goals with lightweight
+          first-frame object-target prompts and supervises future 3D
+          end-effector trajectory chunks from egocentric observations.
+        </h2>
+        <div class="columns is-centered">
+          <div class="column">
+            <div class="stats-card">
+              <span class="highlight-number">2,841</span>
+              <span>egocentric episodes</span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="stats-card">
+              <span class="highlight-number">112,856</span>
+              <span>trajectory samples</span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="stats-card">
+              <span class="highlight-number">3</span>
+              <span>scene-level splits</span>
+            </div>
+          </div>
+        </div>
+        <div class="content has-text-justified mt-5">
+          <p>
+            EgoSPT is collected with a modified Universal Manipulation
+            Interface. Each episode contains egocentric video, object and target
+            bounding-box annotations in the initial frame, and recovered
+            end-effector poses. The scene-aware validation protocol keeps
+            correlated scene units out of the training split, making evaluation
+            sensitive to cross-scene generalization rather than layout
+            memorization.
+          </p>
+        </div>
+        <div class="figure-card mt-5">
+          <img
+            class="paper-figure"
+            src="./static/images/more-modified-umi.png"
+            alt="Modified UMI collection setup"
+          />
+          <figcaption class="has-text-centered">
+            Modified UMI setup for collecting egocentric manipulation
+            trajectories.
+          </figcaption>
+        </div>
+
+        <h3 class="title is-4 has-text-centered mt-6">Dataset Demos</h3>
+        <div class="content has-text-centered">
+          <p>
+            Example egocentric manipulation videos from three scenes in EgoSPT.
+          </p>
+        </div>
+
+        <div class="demo-scene">
+          <h4 class="title is-5">Scene 1</h4>
+          <div class="video-demo-grid">
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene1_demo1.m4v" />
+              </video>
+              <p>put fork1 to bowl1</p>
+            </div>
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene1_demo2.m4v" />
+              </video>
+              <p>put fork1 to bowl2</p>
+            </div>
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene1_demo3.m4v" />
+              </video>
+              <p>put fork1 to bowl3</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-scene">
+          <h4 class="title is-5">Scene 2</h4>
+          <div class="video-demo-grid">
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene2_demo1.m4v" />
+              </video>
+              <p>put fork1 to bowl1</p>
+            </div>
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene2_demo2.m4v" />
+              </video>
+              <p>put fork1 to bowl2</p>
+            </div>
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene2_demo3.m4v" />
+              </video>
+              <p>put fork1 to bowl3</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-scene">
+          <h4 class="title is-5">Scene 3</h4>
+          <div class="video-demo-grid">
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene3_demo1.m4v" />
+              </video>
+              <p>subscene1</p>
+            </div>
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene3_demo2.m4v" />
+              </video>
+              <p>subscene10</p>
+            </div>
+            <div class="video-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="./static/videos_web/scene3_demo3.m4v" />
+              </video>
+              <p>subscene11</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="title is-4 has-text-centered mt-6">
+          Processed Data Visualizations
+        </h3>
+        <div class="content has-text-centered">
+          <p>
+            Each processed demo synchronizes the egocentric video with recovered
+            pose motion and gripper-width signals.
+          </p>
+        </div>
+        <div class="processed-video-grid">
+          <div class="video-card processed-video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="./static/processed_videos_web/put_fork1_to_bowl1.m4v" />
+            </video>
+            <p>put fork1 to bowl1</p>
+          </div>
+          <div class="video-card processed-video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="./static/processed_videos_web/put_fork1_to_bowl2.m4v" />
+            </video>
+            <p>put fork1 to bowl2</p>
+          </div>
+          <div class="video-card processed-video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="./static/processed_videos_web/put_fork1_to_bowl3.m4v" />
+            </video>
+            <p>put fork1 to bowl3</p>
+          </div>
+          <div class="video-card processed-video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="./static/processed_videos_web/put_fork1_to_cup1.m4v" />
+            </video>
+            <p>put fork1 to cup1</p>
+          </div>
+          <div class="video-card processed-video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="./static/processed_videos_web/put_fork1_to_cup2.m4v" />
+            </video>
+            <p>put fork1 to cup2</p>
+          </div>
+          <div class="video-card processed-video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="./static/processed_videos_web/put_fork1_to_plate1.m4v" />
+            </video>
+            <p>put fork1 to plate1</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="method">
+      <div class="container is-max-widescreen">
+        <h2 class="title is-3 has-text-centered">SPOT Policy</h2>
+        <div class="content has-text-centered">
+          <span class="spvtp-pill">Task Encoder</span>
+          <span class="spvtp-pill">Observation Encoder</span>
+          <span class="spvtp-pill">Trajectory Generator</span>
+        </div>
+        <div class="figure-card">
+          <img
+            class="paper-figure"
+            src="./static/images/SPOT-policy.png"
+            alt="SPOT policy architecture"
+          />
+        </div>
+        <div class="columns mt-5">
+          <div class="column">
+            <div class="pipeline-card">
+              <h3 class="title is-5">
+                <span class="icon"><i class="fas fa-crosshairs"></i></span>
+                Task Encoder
+              </h3>
+              <p>
+                Encodes the first-frame visual prompt and coordinate prompt
+                tokens, then lets object and target tokens attend to the
+                first-frame visual features.
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="pipeline-card">
+              <h3 class="title is-5">
+                <span class="icon"><i class="fas fa-eye"></i></span>
+                Observation Encoder
+              </h3>
+              <p>
+                Processes the current egocentric frame and recent trajectory
+                history so the policy can infer the current execution phase.
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="pipeline-card">
+              <h3 class="title is-5">
+                <span class="icon"><i class="fas fa-route"></i></span>
+                Trajectory Generator
+              </h3>
+              <p>
+                Generates a future chunk of relative end-effector actions with
+                translation, 6D rotation, and gripper width.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section has-background-light" id="results">
+      <div class="container is-max-widescreen">
+        <h2 class="title is-3 has-text-centered">Experimental Results</h2>
+        <div class="content has-text-justified">
+          <p>
+            Under strict scene-level validation splits, SPOT benefits from
+            spatial task grounding, DINOv2 visual features, action history, and
+            a flow-matching trajectory head. Lower is better for all trajectory
+            error metrics.
+          </p>
+        </div>
+        <div class="results-grid">
+          <div class="figure-card result-panel">
+            <h3 class="title is-5 has-text-centered">Trajectory Head</h3>
+            <img
+              src="./static/images/ablation_head_full.png"
+              alt="Trajectory head ablation"
+            />
+          </div>
+          <div class="figure-card result-panel">
+            <h3 class="title is-5 has-text-centered">History Horizon</h3>
+            <img
+              src="./static/images/ablation_history_full.png"
+              alt="History horizon ablation"
+            />
+          </div>
+          <div class="figure-card result-panel">
+            <h3 class="title is-5 has-text-centered">Backbone Tuning</h3>
+            <img
+              src="./static/images/ablation_dinov2_base_tuning_full.png"
+              alt="DINOv2 tuning ablation"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="visualizations">
+      <div class="container is-max-widescreen">
+        <h2 class="title is-3 has-text-centered">Trajectory Visualizations</h2>
+        <div class="columns is-centered">
+          <div class="column is-6">
+            <div class="figure-card">
+              <img
+                class="paper-figure"
+                src="./static/images/first_chunk_main.png"
+                alt="First chunk trajectory visualization"
+              />
+              <figcaption class="has-text-centered">
+                First-chunk prediction visualizes immediate local motion and
+                horizon-wise position, rotation, and gripper errors.
+              </figcaption>
+            </div>
+          </div>
+          <div class="column is-6">
+            <div class="figure-card">
+              <img
+                class="paper-figure"
+                src="./static/images/full_trajectory_main.png"
+                alt="Full trajectory visualization"
+              />
+              <figcaption class="has-text-centered">
+                Full-episode stitching shows how local predictions compose into
+                a complete manipulation trajectory.
+              </figcaption>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="title is-4 has-text-centered mt-6">More Scenes</h3>
+        <div class="vis-grid scene-vis-grid">
+          <div class="figure-card scene-card">
+            <img src="./static/images/scene1_vis.png" alt="Scene 1 trajectory" />
+            <figcaption class="has-text-centered">
+              <strong>Scene 1.</strong> Stitched full-trajectory predictions show
+              how local chunks compose over complete episodes.
+            </figcaption>
+          </div>
+          <div class="figure-card scene-card">
+            <img src="./static/images/scene2_vis.png" alt="Scene 2 trajectory" />
+            <figcaption class="has-text-centered">
+              <strong>Scene 2.</strong> Stitched full-trajectory predictions show
+              how local chunks compose over complete episodes.
+            </figcaption>
+          </div>
+          <div class="figure-card scene-card">
+            <img src="./static/images/scene3_vis.png" alt="Scene 3 trajectory" />
+            <figcaption class="has-text-centered">
+              <strong>Scene 3.</strong> Stitched full-trajectory predictions show
+              how local chunks compose over complete episodes.
+            </figcaption>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section has-background-light" id="annotation">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Annotation Tools</h2>
+        <div class="content has-text-justified">
+          <p>
+            EgoSPT uses a lightweight annotation workflow for first-frame object
+            and target bounding boxes. An annotation tool records the two boxes,
+            while a modification tool supports manual inspection and correction
+            before training samples are built.
+          </p>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="figure-card">
+              <img
+                src="./static/images/annotation_tool.png"
+                alt="Annotation tool"
+              />
+            </div>
+          </div>
+          <div class="column">
+            <div class="figure-card">
+              <img
+                src="./static/images/annotation_modify_tool.png"
+                alt="Annotation modification tool"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="citation">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">BibTeX</h2>
+        <pre><code>@article{li2026spvtp,
+  title={Spatially Prompted Visual Trajectory Prediction for Egocentric Manipulation},
+  author={Li, Yifan and Zhou, Xinyu and Ge, Yunhao and Kong, Yu},
+  journal={arXiv preprint},
+  year={2026}
+}</code></pre>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          Website template adapted from the IndustryNav project page. Content
+          and figures are from the SP-VTP / EgoSPT project.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
