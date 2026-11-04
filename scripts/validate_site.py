@@ -141,8 +141,12 @@ def main():
     assert "year={2027}" in text and "@misc{li2026spvtp" not in text
     assert "https://www.egr.msu.edu/~xbtan/" in parsed.links
     assert "Tan, Xiaobo" in text
+    assert "https://github.com/JackYFL/SP-VTP" in parsed.links
+    assert "Code (private)" in text and "collaborator access on GitHub" in text
+    assert "https://github.com/JackYFL/NeurlPS2026-SP-VTP" in parsed.links
     print(f"PASS: balanced HTML, unique anchors, alt text, and {len(parsed.links)} asset/link references.")
     print("PASS: WACV 2027 acceptance label, conference citation, and Xiaobo Tan author link.")
+    print("PASS: private code repository link and separate manuscript-source link.")
 
     summary = json.loads((root / "static/results/rollout_summary.json").read_text())
     assert summary["complete"] and summary["seeds"] == [0, 1, 42]
