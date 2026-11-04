@@ -11,6 +11,7 @@
       content="SP-VTP, SPOT, EgoSPT, egocentric manipulation, spatial prompt, trajectory prediction, robotics"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="results-version" content="2026-11-04-rollout" />
     <title>SP-VTP: Spatially Prompted Visual Trajectory Prediction</title>
 
     <link
@@ -27,11 +28,8 @@
     />
     <link rel="stylesheet" href="./static/css/index.css" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="./static/js/fontawesome.all.min.js"></script>
-    <script src="./static/js/bulma-carousel.min.js"></script>
-    <script src="./static/js/bulma-slider.min.js"></script>
-    <script src="./static/js/index.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script defer src="./static/js/index.js"></script>
   </head>
 
   <body>
@@ -40,24 +38,26 @@
         <a class="navbar-item" href="#">
           <strong>SP-VTP</strong>
         </a>
-        <a
-          role="button"
+        <button
+          type="button"
           class="navbar-burger"
           aria-label="menu"
           aria-expanded="false"
+          aria-controls="site-navigation"
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
-        </a>
+        </button>
       </div>
-      <div class="navbar-menu">
+      <div class="navbar-menu" id="site-navigation">
         <div class="navbar-start" style="flex-grow: 1; justify-content: center">
           <a class="navbar-item" href="#">Home</a>
           <a class="navbar-item" href="#abstract">Abstract</a>
           <a class="navbar-item" href="#dataset">EgoSPT</a>
           <a class="navbar-item" href="#method">SPOT</a>
           <a class="navbar-item" href="#results">Results</a>
+          <a class="navbar-item" href="#feedback">History Feedback</a>
           <a class="navbar-item" href="#visualizations">Visualizations</a>
         </div>
       </div>
@@ -94,6 +94,9 @@
                   ><sup>2</sup>,</span
                 >
                 <span class="author-block"
+                  >Xiaobo Tan<sup>1</sup>,</span
+                >
+                <span class="author-block"
                   ><a href="https://www.egr.msu.edu/~yukong/">Yu Kong</a
                   ><sup>1</sup></span
                 >
@@ -125,7 +128,7 @@
                       class="external-link button is-normal is-rounded is-dark"
                     >
                       <span class="icon"><i class="ai ai-arxiv"></i></span>
-                      <span>arXiv</span>
+                      <span>arXiv (earlier version)</span>
                     </a>
                   </span>
                   <span class="link-block">
@@ -134,7 +137,7 @@
                       class="external-link button is-normal is-rounded is-dark"
                     >
                       <span class="icon"><i class="fab fa-github"></i></span>
-                      <span>Code (coming soon)</span>
+                      <span>Manuscript source</span>
                     </a>
                   </span>
                   <span class="link-block">
@@ -147,6 +150,11 @@
                     </a>
                   </span>
                 </div>
+                <p class="update-note">
+                  Updated November 4, 2026: three-seed comparisons and sequential
+                  predicted-state feedback. The Paper PDF includes the latest
+                  results; the arXiv link points to an earlier version.
+                </p>
               </div>
             </div>
           </div>
@@ -199,8 +207,8 @@
           <div class="contribution-card">
             <h3>Metrics & Protocol</h3>
             <p>
-              We evaluate scene-level generalization with complementary
-              trajectory, rotation, gripper, and final-displacement metrics.
+              We evaluate held-out tasks within three shared scenes and test
+              predicted-state feedback with replayed visual observations.
             </p>
           </div>
         </div>
@@ -214,27 +222,29 @@
             <h2 class="title is-3">Abstract</h2>
             <div class="content has-text-justified">
               <p>
-                Robotic manipulation is often specified through language or task
-                IDs, but cluttered egocentric scenes with visually similar
-                objects are often better described by directly indicating
-                <em>which object</em> to manipulate and <em>where</em> it should
-                go.
+                Language instructions specify task semantics but can be ambiguous
+                when several visually similar objects and candidate targets are
+                present. We study whether first-frame spatial prompts can specify
+                <em>which object</em> to manipulate and <em>where</em> to place it
+                as the egocentric viewpoint changes.
               </p>
               <p>
                 We formalize this setting as
                 <strong>Spatially Prompted Visual Trajectory Prediction</strong>
-                (<strong>SP-VTP</strong>): given object and target spatial
-                prompts on the first frame, a model predicts future relative
-                end-effector trajectories from streaming egocentric
-                observations.
+                (<strong>SP-VTP</strong>), an offline trajectory-prediction
+                setting. <strong>EgoSPT</strong> contains 2,841 fork pick-and-place
+                episodes across three scenes, with first-frame object/target
+                annotations and recovered 3D end-effector motion.
               </p>
               <p>
-                We introduce <strong>EgoSPT</strong>, an egocentric manipulation
-                dataset with first-frame grounding annotations and recovered 3D
-                end-effector motion, and propose <strong>SPOT</strong>, a
-                prompt-centric policy that fuses rendered visual prompts,
-                coordinate prompt tokens, current observations, and action
-                history to generate trajectory chunks.
+                <strong>SPOT</strong> fuses a fixed first-frame task representation
+                with the current image and recent motion history, without an
+                explicit object tracker. Three-seed experiments show lower
+                translation and endpoint errors with spatial prompts; interventions
+                reveal different roles for object and target cues. Sequential
+                predicted-state replay confirms that prompts reduce, but do not
+                eliminate, accumulated drift. These results do not establish
+                closed-loop robot success or transfer to new objects and tasks.
               </p>
             </div>
           </div>
@@ -267,13 +277,13 @@
           <div class="column">
             <div class="stats-card">
               <span class="highlight-number">112,856</span>
-              <span>trajectory samples</span>
+              <span>original sliding-window samples</span>
             </div>
           </div>
           <div class="column">
             <div class="stats-card">
               <span class="highlight-number">3</span>
-              <span>scene-level splits</span>
+              <span>scenes shared by train and validation</span>
             </div>
           </div>
         </div>
@@ -282,10 +292,13 @@
             EgoSPT is collected with a modified Universal Manipulation
             Interface. Each episode contains egocentric video, object and target
             bounding-box annotations in the initial frame, and recovered
-            end-effector poses. The scene-aware validation protocol keeps
-            correlated scene units out of the training split, making evaluation
-            sensitive to cross-scene generalization rather than layout
-            memorization.
+            end-effector poses. A deterministic scene–task-group split keeps all
+            episodes of a selected task group in one partition. All three scenes
+            appear in both training and validation: the standard benchmark uses
+            2,584 training episodes and 257 validation episodes (10,024 validation
+            windows). Per-scene results characterize layout complexity, not
+            unseen-scene transfer. The dataset covers one manipulated-object
+            category and one task family: fork pick-and-place.
           </p>
         </div>
         <div class="figure-card mt-5">
@@ -452,9 +465,9 @@
                 Task Encoder
               </h3>
               <p>
-                Encodes the first-frame visual prompt and coordinate prompt
-                tokens, then lets object and target tokens attend to the
-                first-frame visual features.
+                Encodes rendered boxes and coordinate tokens on the first frame.
+                The resulting task representation stays fixed throughout the
+                episode; no explicit object tracker is used.
               </p>
             </div>
           </div>
@@ -465,8 +478,9 @@
                 Observation Encoder
               </h3>
               <p>
-                Processes the current egocentric frame and recent trajectory
-                history so the policy can infer the current execution phase.
+                Combines the current egocentric frame with the previous four
+                EE states. Standard evaluation uses recorded history; the
+                sequential diagnostic separately feeds back predictions.
               </p>
             </div>
           </div>
@@ -477,8 +491,9 @@
                 Trajectory Generator
               </h3>
               <p>
-                Generates a future chunk of relative end-effector actions with
-                translation, 6D rotation, and gripper width.
+                Uses flow matching to generate 16 relative EE waypoints with
+                translation, 6D rotation, and gripper width. Each waypoint is
+                relative to the chunk origin, not a per-step motion increment.
               </p>
             </div>
           </div>
@@ -491,12 +506,108 @@
         <h2 class="title is-3 has-text-centered">Experimental Results</h2>
         <div class="content has-text-justified">
           <p>
-            Under strict scene-level validation splits, SPOT benefits from
-            spatial task grounding, DINOv2 visual features, action history, and
-            a flow-matching trajectory head. Lower is better for all trajectory
-            error metrics.
+            Unless stated otherwise, results use 10,024 independent validation
+            windows with recorded current RGB and four-step EE history. Tables
+            report mean ± sample standard deviation across training seeds 42, 0,
+            and 1. Translation errors are in cm; S@10 is the percentage of chunk
+            endpoints within 10 cm of the recorded endpoint, not robot task success.
           </p>
         </div>
+
+        <div class="result-highlights">
+          <div class="stats-card">
+            <span class="highlight-number">11.14 cm</span>
+            <span>BBox+Visual fixed-16-step FDE<br />vs. 17.75 cm without prompts</span>
+          </div>
+          <div class="stats-card">
+            <span class="highlight-number">+13.95 pp</span>
+            <span>S@10 gain over No Prompt<br />53.14% vs. 39.19%</span>
+          </div>
+          <div class="stats-card">
+            <span class="highlight-number">45.3% lower</span>
+            <span>episode-end FDE with prompts<br />in cumulative state-feedback replay</span>
+          </div>
+        </div>
+
+        <h3 class="title is-4 mt-6">How much do spatial prompts help?</h3>
+        <p class="table-hint">On smaller screens, scroll tables horizontally to see all metrics.</p>
+        <div class="table-scroll" role="region" aria-label="Three-seed prompting results" tabindex="0">
+          <table class="results-table" id="prompting-results">
+            <caption>Standard independent-window protocol. Lower errors and higher endpoint rates are better.</caption>
+            <thead><tr><th scope="col">Task specification</th><th scope="col">Pos. L2 (cm) ↓</th><th scope="col">FDE (cm) ↓</th><th scope="col">S@2 (%) ↑</th><th scope="col">S@5 (%) ↑</th><th scope="col">S@10 (%) ↑</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">No Prompt</th><td>9.39 ± 0.26</td><td>17.75 ± 0.39</td><td>4.31 ± 0.63</td><td>19.47 ± 1.17</td><td>39.19 ± 0.97</td></tr>
+              <tr><th scope="row">Target Only</th><td>7.07 ± 0.02</td><td>11.57 ± 0.12</td><td>3.35 ± 0.08</td><td>20.16 ± 0.58</td><td>50.14 ± 0.56</td></tr>
+              <tr><th scope="row">Visual Prompt</th><td>6.83 ± 0.18</td><td>11.25 ± 0.50</td><td>3.99 ± 0.34</td><td>22.66 ± 0.94</td><td>52.93 ± 3.17</td></tr>
+              <tr><th scope="row">BBox Prompt</th><td>7.15 ± 0.07</td><td>11.85 ± 0.14</td><td>3.00 ± 0.17</td><td>19.01 ± 0.19</td><td>49.02 ± 0.36</td></tr>
+              <tr class="highlight-row"><th scope="row">BBox+Visual</th><td>6.90 ± 0.10</td><td>11.14 ± 0.29</td><td>3.80 ± 0.41</td><td>21.31 ± 0.62</td><td>53.14 ± 0.41</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="result-note">
+          Spatial prompts mainly reduce large endpoint errors rather than the
+          finest local errors: S@10 improves while S@2 changes little. Target
+          cues explain most endpoint gains; object context further improves the
+          trajectory path. No Prompt still retains the unmarked first frame and
+          recorded history—it is not a current-RGB-only baseline.
+        </p>
+
+        <h3 class="title is-4 mt-6">External VLA references</h3>
+        <p class="result-note">
+          SmolVLA, OpenVLA-OFT, and GR00T N1.6 use current RGB, recorded four-step
+          history, and category language without object or target instance IDs,
+          e.g. <code>pick fork and place to plate</code>. They do not receive
+          first-frame images or spatial prompts. SPOT instead receives an
+          instance-specific spatial task specification. These comparisons do not
+          isolate architecture or fine-tuning strategy.
+        </p>
+        <div class="table-scroll" role="region" aria-label="External VLA results" tabindex="0">
+          <table class="results-table" id="vla-results">
+            <caption>Three-seed results under the standard recorded-history protocol. The π0.5 reference has a different prompt configuration, noted below.</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Task input</th><th scope="col">Pos. L2 (cm) ↓</th><th scope="col">FDE (cm) ↓</th><th scope="col">Rot. geo. (°) ↓</th><th scope="col">S@10 (%) ↑</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">SmolVLA</th><td>Category language</td><td>9.36 ± 0.22</td><td>16.85 ± 0.47</td><td>11.06 ± 0.16</td><td>37.21 ± 1.72</td></tr>
+              <tr><th scope="row">OpenVLA-OFT</th><td>Category language</td><td>8.16 ± 0.06</td><td>15.33 ± 0.14</td><td>8.86 ± 0.05</td><td>41.43 ± 0.74</td></tr>
+              <tr><th scope="row">GR00T N1.6</th><td>Category language</td><td>10.48 ± 1.07</td><td>17.39 ± 1.18</td><td>11.60 ± 0.47</td><td>32.42 ± 4.47</td></tr>
+              <tr class="highlight-row"><th scope="row">SPOT</th><td>BBox+Visual</td><td>6.90 ± 0.10</td><td>11.14 ± 0.29</td><td>9.86 ± 0.09</td><td>53.14 ± 0.41</td></tr>
+              <tr class="reference-row"><th scope="row">π0.5*</th><td>Generic language + visual prompt</td><td>14.25 ± 0.18</td><td>23.68 ± 0.28</td><td>15.53 ± 0.02</td><td>20.67 ± 0.47</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="result-note">
+          <strong>*π0.5 input distinction.</strong> Its original run metadata
+          specifies a rendered first-frame object/target prompt, current RGB,
+          four-step history, and the generic instruction “Move the object
+          highlighted in green to the target highlighted in red.” It is not a
+          language-only baseline. OpenVLA-OFT has lower rotation error than SPOT;
+          the spatial-prompt advantage is not uniform across control variables.
+        </p>
+        <details class="result-details">
+          <summary>Per-scene external-VLA results</summary>
+          <div class="table-scroll" role="region" aria-label="External VLA results for three scenes" tabindex="0">
+            <table class="results-table" id="scene-results">
+              <caption>Same train/validation setting, not unseen-scene transfer. Scene 1/2/3 contain 4,333/3,079/2,612 validation windows. Entries are mean ± sample standard deviation.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Method</th><th scope="colgroup" colspan="3">Scene 1</th><th scope="colgroup" colspan="3">Scene 2</th><th scope="colgroup" colspan="3">Scene 3</th></tr>
+                <tr><th scope="col">Pos. L2 (cm)</th><th scope="col">FDE (cm)</th><th scope="col">S@10 (%)</th><th scope="col">Pos. L2 (cm)</th><th scope="col">FDE (cm)</th><th scope="col">S@10 (%)</th><th scope="col">Pos. L2 (cm)</th><th scope="col">FDE (cm)</th><th scope="col">S@10 (%)</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">SmolVLA</th><td>7.35 ± 0.24</td><td>13.13 ± 0.40</td><td>48.17 ± 1.31</td><td>10.22 ± 0.42</td><td>19.47 ± 0.98</td><td>36.05 ± 3.57</td><td>11.69 ± 0.07</td><td>19.94 ± 0.15</td><td>20.41 ± 0.57</td></tr>
+                <tr><th scope="row">OpenVLA-OFT</th><td>6.10 ± 0.10</td><td>10.98 ± 0.22</td><td>53.55 ± 1.89</td><td>8.80 ± 0.10</td><td>17.48 ± 0.18</td><td>38.75 ± 0.20</td><td>10.83 ± 0.19</td><td>20.01 ± 0.45</td><td>24.50 ± 1.21</td></tr>
+                <tr><th scope="row">GR00T N1.6</th><td>8.67 ± 1.22</td><td>13.26 ± 1.46</td><td>43.55 ± 6.84</td><td>11.18 ± 1.05</td><td>19.71 ± 1.23</td><td>29.76 ± 3.90</td><td>12.65 ± 0.86</td><td>21.51 ± 0.92</td><td>17.10 ± 1.61</td></tr>
+                <tr class="highlight-row"><th scope="row">SPOT</th><td>6.71 ± 0.26</td><td>10.59 ± 0.58</td><td>58.54 ± 2.15</td><td>6.25 ± 0.07</td><td>10.88 ± 0.28</td><td>53.53 ± 1.40</td><td>8.01 ± 0.21</td><td>12.37 ± 0.17</td><td>43.13 ± 1.32</td></tr>
+                <tr class="reference-row"><th scope="row">π0.5*</th><td>11.63 ± 0.25</td><td>18.58 ± 0.41</td><td>25.49 ± 0.93</td><td>14.79 ± 0.21</td><td>25.43 ± 0.38</td><td>22.59 ± 0.40</td><td>17.95 ± 0.17</td><td>30.08 ± 0.19</td><td>10.40 ± 0.28</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <h3 class="title is-4 mt-6">Architecture ablations</h3>
+        <p class="result-note">
+          Seed-42 ablations favor frozen DINOv2, a four-step history, and flow
+          matching. A longer history or an unfrozen backbone is not consistently
+          better. Figure axes retain their explicitly labeled paper units.
+        </p>
         <div class="results-grid">
           <div class="figure-card result-panel">
             <h3 class="title is-5 has-text-centered">Trajectory Head</h3>
@@ -520,6 +631,145 @@
             />
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="feedback">
+      <div class="container is-max-widescreen">
+        <h2 class="title is-3 has-text-centered">What happens when history is predicted?</h2>
+        <div class="protocol-notice">
+          <strong>Sequential state/history feedback with replayed RGB—not a robot rollout.</strong>
+          <p>
+            We reuse the trained checkpoints and fixed first-frame prompt. After
+            one recorded initialization, feedback modes use each 16-step chunk for
+            the next history; the cumulative condition also uses its predicted
+            endpoint as the next pose anchor, without GT resets. All modes still
+            read recorded video frames. Predictions do not change the image,
+            object state, contact, or termination.
+          </p>
+        </div>
+        <div class="table-scroll mt-5" role="region" aria-label="History and pose feedback comparison" tabindex="0">
+          <table class="results-table" id="rollout-results">
+            <caption>Episode-end FDE (cm), averaged over 257 episodes, then reported as mean ± sample standard deviation over seeds 42/0/1.</caption>
+            <thead><tr><th scope="col">History / pose anchor</th><th scope="col">SPOT (BBox+Visual)</th><th scope="col">No Prompt</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Recorded / recorded</th><td>4.55 ± 0.14</td><td>5.91 ± 0.29</td></tr>
+              <tr><th scope="row">Predicted / recorded</th><td>6.53 ± 0.24</td><td>9.36 ± 0.75</td></tr>
+              <tr class="highlight-row"><th scope="row">Predicted / predicted</th><td>22.59 ± 0.78</td><td>41.30 ± 0.39</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="result-note">
+          <strong>Errors accumulate; prompts mitigate but do not eliminate drift.</strong>
+          Correct prompts reduce cumulative episode-end FDE by 45.3% and ADE by
+          27.6% relative to No Prompt. Even then, episode-end S@10 is only 16.86%
+          and Combined@10 is 5.45%. These are offline endpoint criteria, not
+          physical pick-and-place success rates.
+        </p>
+        <p class="result-note">
+          <strong>Do not compare 4.55 cm with the 11.14 cm benchmark FDE.</strong>
+          The former scores the last valid waypoint of each episode, including
+          partial tails; the latter scores every fixed-16-step sliding window.
+          This diagnostic also uses corrected raw-frame alignment and recomputes
+          all paired GT controls. Each of the 36 evaluations covers 986 sequential
+          queries and 13,906 future waypoints. The current predicted pose may
+          become inconsistent with the replayed camera viewpoint, so this is
+          neither a deployment-success measurement nor a guaranteed upper/lower bound.
+        </p>
+        <figure class="figure-card mt-5">
+          <img class="paper-figure" src="./static/images/rollout_drift_curves.png" loading="lazy"
+            alt="Position error versus episode progress for recorded history, predicted history with recorded anchors, and cumulative predicted-state feedback. Correct prompts reduce but do not remove cumulative drift." />
+          <figcaption class="has-text-centered">
+            Position error over normalized post-initialization progress. Curves
+            average waypoints within progress bins, balance episodes, then show
+            the three-seed mean ± sample standard deviation. The last bin is not
+            the exact episode-end FDE.
+            <a href="./static/images/rollout_drift_curves.png">Open the full-resolution plot.</a>
+          </figcaption>
+        </figure>
+
+        <h3 class="title is-4 mt-6">Do object and target cues still play different roles?</h3>
+        <div class="table-scroll" role="region" aria-label="Cumulative feedback prompt interventions" tabindex="0">
+          <table class="results-table" id="rollout-interventions">
+            <caption>Cumulative predicted-history/predicted-anchor replay, three-seed mean ± sample standard deviation. Both visual and coordinate prompts are changed by each shuffle.</caption>
+            <thead><tr><th scope="col">Prompt condition</th><th scope="col">ADE (cm) ↓</th><th scope="col">Episode-end FDE (cm) ↓</th><th scope="col">End S@10 (%) ↑</th><th scope="col">End Combined@10 (%) ↑</th></tr></thead>
+            <tbody>
+              <tr class="highlight-row"><th scope="row">BBox+Visual</th><td>14.39 ± 0.46</td><td>22.59 ± 0.78</td><td>16.86 ± 1.37</td><td>5.45 ± 2.02</td></tr>
+              <tr><th scope="row">No Prompt</th><td>19.87 ± 0.25</td><td>41.30 ± 0.39</td><td>1.69 ± 0.98</td><td>0.39 ± 0.00</td></tr>
+              <tr><th scope="row">Shuffled Object</th><td>18.95 ± 0.48</td><td>24.09 ± 0.45</td><td>11.67 ± 0.67</td><td>4.02 ± 0.22</td></tr>
+              <tr><th scope="row">Shuffled Target</th><td>19.74 ± 0.47</td><td>41.93 ± 1.61</td><td>1.17 ± 1.03</td><td>0.39 ± 0.39</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="result-note">
+          Shuffling the object mainly disrupts the early acquisition path;
+          shuffling the target severely affects late transport and placement.
+          The five stages below are assigned post-hoc using recorded EE motion
+          and gripper width. They are not extra policy inputs. Phase ADE averages
+          waypoint error within each episode and phase; it is not chunk-end FDE.
+        </p>
+        <div class="table-scroll" role="region" aria-label="Five-phase cumulative feedback results" tabindex="0">
+          <table class="results-table" id="rollout-phases">
+            <caption>Episode-balanced waypoint ADE (cm), three-seed mean ± sample standard deviation.</caption>
+            <thead><tr><th scope="col">Condition</th><th scope="col">Approach</th><th scope="col">Pre-grasp</th><th scope="col">Grasp / occlusion</th><th scope="col">Transport</th><th scope="col">Placement</th></tr></thead>
+            <tbody>
+              <tr class="highlight-row"><th scope="row">BBox+Visual</th><td>6.97 ± 0.23</td><td>12.10 ± 0.45</td><td>12.11 ± 0.53</td><td>15.97 ± 0.59</td><td>21.48 ± 0.71</td></tr>
+              <tr><th scope="row">No Prompt</th><td>7.22 ± 0.12</td><td>13.18 ± 0.50</td><td>13.67 ± 0.60</td><td>19.14 ± 0.19</td><td>37.48 ± 0.29</td></tr>
+              <tr><th scope="row">Shuffled Object</th><td>10.19 ± 0.21</td><td>19.33 ± 0.57</td><td>19.98 ± 0.72</td><td>22.15 ± 0.96</td><td>23.29 ± 0.34</td></tr>
+              <tr><th scope="row">Shuffled Target</th><td>7.09 ± 0.29</td><td>12.18 ± 0.17</td><td>12.30 ± 0.08</td><td>19.10 ± 0.53</td><td>37.91 ± 1.41</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="result-details">
+          <summary>Per-scene cumulative feedback</summary>
+          <div class="table-scroll" role="region" aria-label="Cumulative feedback by scene" tabindex="0">
+            <table class="results-table" id="rollout-scenes">
+              <caption>Episode-end FDE (cm), three-seed mean ± sample standard deviation. All three scenes are represented in training.</caption>
+              <thead><tr><th scope="col">Scene</th><th scope="col">SPOT (BBox+Visual)</th><th scope="col">No Prompt</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Scene 1</th><td>23.85 ± 2.03</td><td>37.97 ± 1.47</td></tr>
+                <tr><th scope="row">Scene 2</th><td>22.64 ± 2.03</td><td>48.39 ± 1.60</td></tr>
+                <tr><th scope="row">Scene 3</th><td>21.36 ± 0.22</td><td>37.88 ± 2.48</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+        <details class="result-details">
+          <summary>Protocol, metric definitions, and downloadable results</summary>
+          <div class="content">
+            <p>
+              Queries occur at steps 4, 20, 36, …, using H=16 and K=4. History
+              excludes the current state and is re-expressed at the next chunk
+              anchor. All relative waypoints are composed with their common
+              chunk origin—not chained as incremental transforms. Gripper width
+              remains absolute. Future GT actions are used only for scoring.
+            </p>
+            <p>
+              The recorded-history/recorded-anchor control is recomputed with
+              the same corrected alignment, episodes, query times, and initial
+              trajectory noise as every other condition. The corrected loader
+              would yield 10,051 complete sliding windows, versus the original
+              10,024; neither index set defines the sequential schedule. Each
+              evaluation has 746 full chunks and 240 partial tails. First-chunk
+              agreement, paired noise, full tail coverage, and no cumulative GT
+              anchor reset were audited. The regression suite passes 59 tests.
+            </p>
+            <p>
+              ADE first averages Euclidean position error over all valid future
+              waypoints of an episode, then across episodes. Episode-end FDE
+              uses only its final valid waypoint. End Combined@10 additionally
+              requires endpoint rotation within 20° and matching gripper state
+              (open when width exceeds 3 cm). All endpoint rates are offline
+              agreement criteria, not physical task success.
+            </p>
+            <p>
+              <a href="./static/results/rollout_summary.json" download>Rollout summaries and audits (JSON)</a>
+              · <a href="./static/results/rollout_per_seed.csv" download>Per-seed / per-scene metrics (CSV)</a>
+              · <a href="./static/results/rollout_phase_aggregate.csv" download>Phase metrics (CSV)</a>
+              · <a href="https://github.com/JackYFL/NeurlPS2026-SP-VTP/tree/6b3466c">Manuscript source for this update</a>
+            </p>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -548,8 +798,9 @@
                 alt="Full trajectory visualization"
               />
               <figcaption class="has-text-centered">
-                Full-episode stitching shows how local predictions compose into
-                a complete manipulation trajectory.
+                Independent-window predictions stitched for visualization—not
+                an autoregressive rollout. Predicted-state feedback is evaluated
+                separately above.
               </figcaption>
             </div>
           </div>
@@ -560,22 +811,22 @@
           <div class="figure-card scene-card">
             <img src="./static/images/scene1_vis.png" alt="Scene 1 trajectory" />
             <figcaption class="has-text-centered">
-              <strong>Scene 1.</strong> Stitched full-trajectory predictions show
-              how local chunks compose over complete episodes.
+              <strong>Scene 1.</strong> Stitched independent-window predictions;
+              these images do not measure closed-loop execution.
             </figcaption>
           </div>
           <div class="figure-card scene-card">
             <img src="./static/images/scene2_vis.png" alt="Scene 2 trajectory" />
             <figcaption class="has-text-centered">
-              <strong>Scene 2.</strong> Stitched full-trajectory predictions show
-              how local chunks compose over complete episodes.
+              <strong>Scene 2.</strong> Stitched independent-window predictions;
+              these images do not measure closed-loop execution.
             </figcaption>
           </div>
           <div class="figure-card scene-card">
             <img src="./static/images/scene3_vis.png" alt="Scene 3 trajectory" />
             <figcaption class="has-text-centered">
-              <strong>Scene 3.</strong> Stitched full-trajectory predictions show
-              how local chunks compose over complete episodes.
+              <strong>Scene 3.</strong> Stitched independent-window predictions;
+              these images do not measure closed-loop execution.
             </figcaption>
           </div>
         </div>
@@ -616,12 +867,13 @@
 
     <section class="section" id="citation">
       <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">BibTeX</h2>
-        <pre><code>@article{li2026spvtp,
+        <h2 class="title is-3 has-text-centered">BibTeX (current manuscript)</h2>
+        <pre><code>@misc{li2026spvtp,
   title={Spatially Prompted Visual Trajectory Prediction for Egocentric Manipulation},
-  author={Li, Yifan and Zhou, Xinyu and Ge, Yunhao and Kong, Yu},
-  journal={arXiv preprint},
-  year={2026}
+  author={Li, Yifan and Zhou, Xinyu and Ge, Yunhao and Tan, Xiaobo and Kong, Yu},
+  year={2026},
+  howpublished={Project manuscript},
+  url={https://jackyfl.github.io/SP-VTP-project-page/static/spvtp-paper.pdf}
 }</code></pre>
       </div>
     </section>

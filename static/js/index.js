@@ -1,20 +1,18 @@
-$(document).ready(function () {
-  $(".navbar-burger").click(function () {
-    $(".navbar-burger").toggleClass("is-active");
-    $(".navbar-menu").toggleClass("is-active");
+document.addEventListener("DOMContentLoaded", function () {
+  const burger = document.querySelector(".navbar-burger");
+  const menu = document.getElementById("site-navigation");
+  if (!burger || !menu) return;
+
+  function setOpen(open) {
+    burger.classList.toggle("is-active", open);
+    menu.classList.toggle("is-active", open);
+    burger.setAttribute("aria-expanded", String(open));
+  }
+
+  burger.addEventListener("click", function () {
+    setOpen(burger.getAttribute("aria-expanded") !== "true");
   });
-
-  if (typeof bulmaCarousel !== "undefined") {
-    bulmaCarousel.attach(".carousel", {
-      slidesToScroll: 1,
-      slidesToShow: 3,
-      loop: true,
-      infinite: true,
-      autoplay: false,
-    });
-  }
-
-  if (typeof bulmaSlider !== "undefined") {
-    bulmaSlider.attach();
-  }
+  menu.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () { setOpen(false); });
+  });
 });
