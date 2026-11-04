@@ -135,7 +135,14 @@ def main():
     text = " ".join(html.split())
     assert "not a language-only baseline" in text
     assert "without GT resets" in text and "not robot task success" in text
+    assert "Accepted to WACV 2027" in text
+    assert "@inproceedings{li2027spvtp," in text
+    assert "booktitle={Winter Conference on Applications of Computer Vision (WACV)}" in text
+    assert "year={2027}" in text and "@misc{li2026spvtp" not in text
+    assert "https://www.egr.msu.edu/~xbtan/" in parsed.links
+    assert "Tan, Xiaobo" in text
     print(f"PASS: balanced HTML, unique anchors, alt text, and {len(parsed.links)} asset/link references.")
+    print("PASS: WACV 2027 acceptance label, conference citation, and Xiaobo Tan author link.")
 
     summary = json.loads((root / "static/results/rollout_summary.json").read_text())
     assert summary["complete"] and summary["seeds"] == [0, 1, 42]

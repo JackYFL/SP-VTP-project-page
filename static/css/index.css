@@ -38,6 +38,10 @@ html {
   line-height: 1.08;
 }
 
+.publication-venue {
+  margin: 0.75rem 0 1rem;
+}
+
 .publication-authors a {
   color: #2575a8 !important;
 }
