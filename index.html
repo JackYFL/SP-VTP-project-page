@@ -142,16 +142,7 @@
                       class="external-link button is-normal is-rounded is-dark"
                     >
                       <span class="icon"><i class="fab fa-github"></i></span>
-                      <span>Code (private)</span>
-                    </a>
-                  </span>
-                  <span class="link-block">
-                    <a
-                      href="https://github.com/JackYFL/NeurlPS2026-SP-VTP"
-                      class="external-link button is-normal is-rounded is-dark"
-                    >
-                      <span class="icon"><i class="fab fa-github"></i></span>
-                      <span>Manuscript source</span>
+                      <span>Code</span>
                     </a>
                   </span>
                   <span class="link-block">
@@ -168,8 +159,6 @@
                   Updated November 4, 2026: three-seed comparisons and sequential
                   predicted-state feedback. The Paper PDF includes the latest
                   results; the arXiv link points to an earlier version.
-                  The code repository is currently private and requires
-                  collaborator access on GitHub.
                 </p>
               </div>
             </div>
@@ -585,8 +574,8 @@
               <tr><th scope="row">SmolVLA</th><td>Category language</td><td>9.36 ± 0.22</td><td>16.85 ± 0.47</td><td>11.06 ± 0.16</td><td>37.21 ± 1.72</td></tr>
               <tr><th scope="row">OpenVLA-OFT</th><td>Category language</td><td>8.16 ± 0.06</td><td>15.33 ± 0.14</td><td>8.86 ± 0.05</td><td>41.43 ± 0.74</td></tr>
               <tr><th scope="row">GR00T N1.6</th><td>Category language</td><td>10.48 ± 1.07</td><td>17.39 ± 1.18</td><td>11.60 ± 0.47</td><td>32.42 ± 4.47</td></tr>
-              <tr class="highlight-row"><th scope="row">SPOT</th><td>BBox+Visual</td><td>6.90 ± 0.10</td><td>11.14 ± 0.29</td><td>9.86 ± 0.09</td><td>53.14 ± 0.41</td></tr>
               <tr class="reference-row"><th scope="row">π0.5*</th><td>Generic language + visual prompt</td><td>14.25 ± 0.18</td><td>23.68 ± 0.28</td><td>15.53 ± 0.02</td><td>20.67 ± 0.47</td></tr>
+              <tr class="highlight-row"><th scope="row">SPOT</th><td>BBox+Visual</td><td>6.90 ± 0.10</td><td>11.14 ± 0.29</td><td>9.86 ± 0.09</td><td>53.14 ± 0.41</td></tr>
             </tbody>
           </table>
         </div>
@@ -611,8 +600,8 @@
                 <tr><th scope="row">SmolVLA</th><td>7.35 ± 0.24</td><td>13.13 ± 0.40</td><td>48.17 ± 1.31</td><td>10.22 ± 0.42</td><td>19.47 ± 0.98</td><td>36.05 ± 3.57</td><td>11.69 ± 0.07</td><td>19.94 ± 0.15</td><td>20.41 ± 0.57</td></tr>
                 <tr><th scope="row">OpenVLA-OFT</th><td>6.10 ± 0.10</td><td>10.98 ± 0.22</td><td>53.55 ± 1.89</td><td>8.80 ± 0.10</td><td>17.48 ± 0.18</td><td>38.75 ± 0.20</td><td>10.83 ± 0.19</td><td>20.01 ± 0.45</td><td>24.50 ± 1.21</td></tr>
                 <tr><th scope="row">GR00T N1.6</th><td>8.67 ± 1.22</td><td>13.26 ± 1.46</td><td>43.55 ± 6.84</td><td>11.18 ± 1.05</td><td>19.71 ± 1.23</td><td>29.76 ± 3.90</td><td>12.65 ± 0.86</td><td>21.51 ± 0.92</td><td>17.10 ± 1.61</td></tr>
-                <tr class="highlight-row"><th scope="row">SPOT</th><td>6.71 ± 0.26</td><td>10.59 ± 0.58</td><td>58.54 ± 2.15</td><td>6.25 ± 0.07</td><td>10.88 ± 0.28</td><td>53.53 ± 1.40</td><td>8.01 ± 0.21</td><td>12.37 ± 0.17</td><td>43.13 ± 1.32</td></tr>
                 <tr class="reference-row"><th scope="row">π0.5*</th><td>11.63 ± 0.25</td><td>18.58 ± 0.41</td><td>25.49 ± 0.93</td><td>14.79 ± 0.21</td><td>25.43 ± 0.38</td><td>22.59 ± 0.40</td><td>17.95 ± 0.17</td><td>30.08 ± 0.19</td><td>10.40 ± 0.28</td></tr>
+                <tr class="highlight-row"><th scope="row">SPOT</th><td>6.71 ± 0.26</td><td>10.59 ± 0.58</td><td>58.54 ± 2.15</td><td>6.25 ± 0.07</td><td>10.88 ± 0.28</td><td>53.53 ± 1.40</td><td>8.01 ± 0.21</td><td>12.37 ± 0.17</td><td>43.13 ± 1.32</td></tr>
               </tbody>
             </table>
           </div>
@@ -654,14 +643,13 @@
       <div class="container is-max-widescreen">
         <h2 class="title is-3 has-text-centered">What happens when history is predicted?</h2>
         <div class="protocol-notice">
-          <strong>Sequential state/history feedback with replayed RGB—not a robot rollout.</strong>
+          <strong>Predicted-history feedback with recorded RGB.</strong>
           <p>
-            We reuse the trained checkpoints and fixed first-frame prompt. After
-            one recorded initialization, feedback modes use each 16-step chunk for
-            the next history; the cumulative condition also uses its predicted
-            endpoint as the next pose anchor, without GT resets. All modes still
-            read recorded video frames. Predictions do not change the image,
-            object state, contact, or termination.
+            After a recorded warm start, each predicted 16-step chunk supplies
+            the next history. Cumulative replay also uses predicted pose anchors,
+            without GT resets. The first-frame prompt stays fixed and RGB remains
+            recorded: predictions do not change the scene, so this is not a
+            physical robot rollout.
           </p>
         </div>
         <div class="table-scroll mt-5" role="region" aria-label="History and pose feedback comparison" tabindex="0">
@@ -676,30 +664,23 @@
           </table>
         </div>
         <p class="result-note">
-          <strong>Errors accumulate; prompts mitigate but do not eliminate drift.</strong>
-          Correct prompts reduce cumulative episode-end FDE by 45.3% and ADE by
-          27.6% relative to No Prompt. Even then, episode-end S@10 is only 16.86%
-          and Combined@10 is 5.45%. These are offline endpoint criteria, not
-          physical pick-and-place success rates.
+          <strong>Prompts reduce, but do not eliminate, drift.</strong>
+          Cumulative episode-end FDE drops by 45.3%, from 41.30 to 22.59 cm.
+          End S@10 is 16.86% and Combined@10 is 5.45%—offline endpoint agreement,
+          not physical task success.
         </p>
         <p class="result-note">
-          <strong>Do not compare 4.55 cm with the 11.14 cm benchmark FDE.</strong>
-          The former scores the last valid waypoint of each episode, including
-          partial tails; the latter scores every fixed-16-step sliding window.
-          This diagnostic also uses corrected raw-frame alignment and recomputes
-          all paired GT controls. Each of the 36 evaluations covers 986 sequential
-          queries and 13,906 future waypoints. The current predicted pose may
-          become inconsistent with the replayed camera viewpoint, so this is
-          neither a deployment-success measurement nor a guaranteed upper/lower bound.
+          Episode-end FDE scores the final valid waypoint, including partial
+          tails; it is not the fixed-16-step FDE above. The recorded-history
+          control uses the same corrected alignment and queries. Predicted poses
+          can diverge from the replayed camera view, limiting deployment claims.
         </p>
         <figure class="figure-card mt-5">
           <img class="paper-figure" src="./static/images/rollout_drift_curves.png" loading="lazy"
             alt="Position error versus episode progress for recorded history, predicted history with recorded anchors, and cumulative predicted-state feedback. Correct prompts reduce but do not remove cumulative drift." />
           <figcaption class="has-text-centered">
-            Position error over normalized post-initialization progress. Curves
-            average waypoints within progress bins, balance episodes, then show
-            the three-seed mean ± sample standard deviation. The last bin is not
-            the exact episode-end FDE.
+            Episode-balanced position error over normalized progress: three-seed
+            mean ± sample standard deviation. The final bin is not episode-end FDE.
             <a href="./static/images/rollout_drift_curves.png">Open the full-resolution plot.</a>
           </figcaption>
         </figure>
@@ -718,11 +699,10 @@
           </table>
         </div>
         <p class="result-note">
-          Shuffling the object mainly disrupts the early acquisition path;
-          shuffling the target severely affects late transport and placement.
-          The five stages below are assigned post-hoc using recorded EE motion
-          and gripper width. They are not extra policy inputs. Phase ADE averages
-          waypoint error within each episode and phase; it is not chunk-end FDE.
+          Object shuffling mainly disrupts early acquisition; target shuffling
+          harms transport and placement. Phases use recorded EE motion and
+          gripper width for analysis only. Phase ADE averages waypoint errors
+          within each episode and phase, not chunk-end errors.
         </p>
         <div class="table-scroll" role="region" aria-label="Five-phase cumulative feedback results" tabindex="0">
           <table class="results-table" id="rollout-phases">
@@ -754,35 +734,29 @@
           <summary>Protocol, metric definitions, and downloadable results</summary>
           <div class="content">
             <p>
-              Queries occur at steps 4, 20, 36, …, using H=16 and K=4. History
-              excludes the current state and is re-expressed at the next chunk
-              anchor. All relative waypoints are composed with their common
-              chunk origin—not chained as incremental transforms. Gripper width
-              remains absolute. Future GT actions are used only for scoring.
+              Queries start at step 4 and advance by 16. Four past states,
+              excluding the current state, are re-expressed at each new anchor.
+              Waypoints share a chunk origin; they are not incremental transforms.
+              Gripper width is absolute. Future GT actions are used only for scoring.
             </p>
             <p>
-              The recorded-history/recorded-anchor control is recomputed with
-              the same corrected alignment, episodes, query times, and initial
-              trajectory noise as every other condition. The corrected loader
-              would yield 10,051 complete sliding windows, versus the original
-              10,024; neither index set defines the sequential schedule. Each
-              evaluation has 746 full chunks and 240 partial tails. First-chunk
-              agreement, paired noise, full tail coverage, and no cumulative GT
-              anchor reset were audited. The regression suite passes 59 tests.
+              All conditions use the same 257 episodes, corrected alignment,
+              query times, and paired noise. Each evaluation covers 986 queries
+              (746 full chunks and 240 partial tails) and 13,906 future waypoints.
+              First-chunk agreement, tail coverage, and no cumulative GT anchor
+              resets were audited.
             </p>
             <p>
-              ADE first averages Euclidean position error over all valid future
-              waypoints of an episode, then across episodes. Episode-end FDE
-              uses only its final valid waypoint. End Combined@10 additionally
-              requires endpoint rotation within 20° and matching gripper state
-              (open when width exceeds 3 cm). All endpoint rates are offline
+              ADE averages waypoint position errors per episode, then across
+              episodes; FDE uses each episode's final valid waypoint. End
+              Combined@10 requires position error ≤10 cm, rotation error ≤20°,
+              and matching gripper state (open above 3 cm). These are offline
               agreement criteria, not physical task success.
             </p>
             <p>
               <a href="./static/results/rollout_summary.json" download>Rollout summaries and audits (JSON)</a>
               · <a href="./static/results/rollout_per_seed.csv" download>Per-seed / per-scene metrics (CSV)</a>
               · <a href="./static/results/rollout_phase_aggregate.csv" download>Phase metrics (CSV)</a>
-              · <a href="https://github.com/JackYFL/NeurlPS2026-SP-VTP/tree/6b3466c">Manuscript source for this update</a>
             </p>
           </div>
         </details>

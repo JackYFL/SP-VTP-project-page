@@ -42,6 +42,11 @@ html {
   margin: 0.75rem 0 1rem;
 }
 
+.publication-venue .spvtp-pill {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  padding: 0.45rem 1rem;
+}
+
 .publication-authors a {
   color: #2575a8 !important;
 }

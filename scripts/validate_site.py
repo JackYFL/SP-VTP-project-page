@@ -142,11 +142,14 @@ def main():
     assert "https://www.egr.msu.edu/~xbtan/" in parsed.links
     assert "Tan, Xiaobo" in text
     assert "https://github.com/JackYFL/SP-VTP" in parsed.links
-    assert "Code (private)" in text and "collaborator access on GitHub" in text
-    assert "https://github.com/JackYFL/NeurlPS2026-SP-VTP" in parsed.links
+    assert "<span>Code</span>" in html and "private" not in text.lower()
+    assert "manuscript source" not in text.lower()
+    assert not any("github.com/JackYFL/NeurlPS2026-SP-VTP" in link for link in parsed.links)
+    for table in ("vla-results", "scene-results"):
+        assert [row[0] for row in parsed.tables[table]][-2:] == ["π0.5*", "SPOT"]
     print(f"PASS: balanced HTML, unique anchors, alt text, and {len(parsed.links)} asset/link references.")
     print("PASS: WACV 2027 acceptance label, conference citation, and Xiaobo Tan author link.")
-    print("PASS: private code repository link and separate manuscript-source link.")
+    print("PASS: Code label, no private/source-link text, and π0.5 before SPOT in both tables.")
 
     summary = json.loads((root / "static/results/rollout_summary.json").read_text())
     assert summary["complete"] and summary["seeds"] == [0, 1, 42]

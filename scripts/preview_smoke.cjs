@@ -85,17 +85,28 @@ async function main() {
   await evaluate("document.documentElement.style.scrollBehavior = 'auto'; true");
   await evaluate("Promise.all(Array.from(document.images).filter(i => i.loading !== 'lazy').map(i => i.complete ? true : new Promise(r => { i.onload = i.onerror = () => r(true); }))).then(() => true)");
   assert.equal(await evaluate('document.querySelectorAll("table.results-table").length'), 7);
+  const venueFont = await evaluate('parseFloat(getComputedStyle(document.querySelector(".publication-venue .spvtp-pill")).fontSize)');
+  const otherPillFont = await evaluate('parseFloat(getComputedStyle(document.querySelector("#method .spvtp-pill")).fontSize)');
+  assert(venueFont > otherPillFont, "WACV badge should be larger than other pills");
+  assert.equal(await evaluate('Array.from(document.querySelectorAll(".publication-links a")).find(a => a.href === "https://github.com/JackYFL/SP-VTP").textContent.trim()'), "Code");
+  assert.equal(await evaluate('Array.from(document.links).filter(a => /manuscript source/i.test(a.textContent)).length'), 0);
+  for (const table of ["vla-results", "scene-results"]) {
+    assert.deepEqual(await evaluate(`Array.from(document.querySelectorAll('#${table} tbody th')).slice(-2).map(el => el.textContent)`), ["π0.5*", "SPOT"]);
+  }
 
   async function capture(width, mobile, anchor, file) {
     await command("Emulation.setDeviceMetricsOverride", {width, height: 1100,
       deviceScaleFactor: 1, mobile});
-    await evaluate(`document.getElementById(${JSON.stringify(anchor)}).scrollIntoView(); true`);
+    await evaluate(anchor === null ? "window.scrollTo(0, 0); true" :
+      `document.getElementById(${JSON.stringify(anchor)}).scrollIntoView(); true`);
     await evaluate("new Promise(resolve => setTimeout(() => resolve(true), 600))");
     const dimensions = await evaluate("({width: innerWidth, scroll: document.documentElement.scrollWidth})");
     assert(dimensions.scroll <= width + 1, `Page overflows at ${width}px: ${JSON.stringify(dimensions)}`);
     const {data} = await command("Page.captureScreenshot", {format: "png"});
     fs.writeFileSync(path.join(output, file), Buffer.from(data, "base64"));
   }
+  await capture(1440, false, null, "desktop-header.png");
+  await capture(390, true, null, "mobile-header.png");
   await capture(1440, false, "results", "desktop-results.png");
   await capture(1440, false, "feedback", "desktop-feedback.png");
   await capture(390, true, "feedback", "mobile-feedback.png");
